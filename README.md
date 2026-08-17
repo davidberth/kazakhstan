@@ -26,5 +26,9 @@ npm run dev              # http://localhost:4321
 
 Push to `main`. A GitHub Actions workflow builds the site and deploys it to GitHub Pages.
 
+Until the `kz` CNAME record exists at Squarespace, the site serves from its fallback
+project path, <https://lixel.io/kazakhstan/>, which will redirect to `kz.lixel.io` once
+the custom domain binds.
+
 The site is unlisted (`noindex`, not linked from `lixel.io`) but publicly reachable.
 See `CLAUDE.md` for the full set of decisions and constraints.

@@ -73,9 +73,24 @@ To publish: `kz.lixel.io` → CNAME → `davidberth.github.io`, plus a `CNAME` f
 **Current state:** Pages is enabled (`build_type: workflow`) and the site deploys cleanly,
 but GitHub has not registered the custom domain (`cname: null`) because `kz.lixel.io` does
 not resolve yet. Until the Squarespace CNAME record is added, the site serves from the
-fallback project path: <https://lixel.io/kz.lixel.io/>. Once DNS resolves, re-run the
-deploy (or `gh api --method PUT repos/davidberth/kz.lixel.io/pages -f cname=kz.lixel.io`)
-and then enforce HTTPS.
+fallback project path: <https://lixel.io/kazakhstan/>. Once DNS resolves:
+
+```powershell
+gh api --method PUT repos/davidberth/kazakhstan/pages -f cname=kz.lixel.io
+# wait for cert issuance, then:
+gh api --method PUT repos/davidberth/kazakhstan/pages -F https_enforced=true
+```
+
+### Why the repo is named `kazakhstan`
+
+GitHub Pages serves a *project* site at `<user site root>/<repo name>/`. The user site
+`davidberth/davidberth.github.io` owns `lixel.io`, so this repo's fallback URL is
+`lixel.io/<repo name>/`. The repo was briefly named `kz.lixel.io`, which produced the
+stuttering `lixel.io/kz.lixel.io/`. Renamed to `kazakhstan` so the fallback reads cleanly.
+
+The repo name is invisible once the custom domain binds — `kz.lixel.io` is the canonical
+URL and the fallback path redirects to it. **Do not rename the repo again**; the fallback
+path is the only thing that would break, but it is also what anyone is using today.
 
 ## Architecture
 

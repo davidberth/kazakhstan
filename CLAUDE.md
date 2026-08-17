@@ -56,15 +56,26 @@ lixel.io          NS     ns-cloud-b{1..4}.googledomains.com
 ```
 
 - **Registrar:** Squarespace (auto-renews 2026-08-31)
-- **Nameservers:** Google (`ns-cloud-b*`) — the zone is *not* served from Squarespace's DNS
-  panel, so records must be edited wherever that zone actually lives.
+- **Nameservers:** `ns-cloud-b*.googledomains.com` — legacy Google Domains infrastructure
+  that **Squarespace inherited** in the acquisition. Despite the `googledomains.com` names,
+  this is *not* Google Cloud DNS: neither GCP project (`atlas-495720`,
+  `mystical-sphinx-495720-v6`) has ever enabled the Cloud DNS API, and `gcloud dns` cannot
+  see the zone. **DNS records are edited in the Squarespace domains dashboard.**
+- Zone TTL is 300s, so record changes take effect within minutes.
 - Existing site repo: `davidberth/davidberth.github.io` (Jekyll, public)
 
 **Mail runs on this domain.** Never touch MX, SPF, DKIM, or DMARC records. Adding
 `kz` is a single additive CNAME and must not modify anything else in the zone.
 
 To publish: `kz.lixel.io` → CNAME → `davidberth.github.io`, plus a `CNAME` file containing
-`kz.lixel.io` at the site root (Astro: `public/CNAME`).
+`kz.lixel.io` at the site root (Astro: `public/CNAME` — already in place).
+
+**Current state:** Pages is enabled (`build_type: workflow`) and the site deploys cleanly,
+but GitHub has not registered the custom domain (`cname: null`) because `kz.lixel.io` does
+not resolve yet. Until the Squarespace CNAME record is added, the site serves from the
+fallback project path: <https://lixel.io/kz.lixel.io/>. Once DNS resolves, re-run the
+deploy (or `gh api --method PUT repos/davidberth/kz.lixel.io/pages -f cname=kz.lixel.io`)
+and then enforce HTTPS.
 
 ## Architecture
 

@@ -3,8 +3,10 @@ title: The Shapan
 order: 2
 group: shapan
 place: The steppe, southwest of Astana
-lead: The ceremony.
+lead: Dinner in a yurt, out on the steppe.
 ---
 
-Replace this with the story. The shapan, who gave it, what was said, and what
-it meant to be honored this way.
+Aizhan's family welcomed me with dinner in a yurt — the traditional Kazakh
+structure — out on the steppe beyond Astana.
+
+This is where I was given the shapan.

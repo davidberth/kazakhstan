@@ -2,8 +2,11 @@
 title: The Mountains
 order: 4
 group: mountains
-place: Zailiysky Alatau, south of Almaty
-lead: Up into the range above the city.
+place: Trans-Ili Alatau, south of Almaty
+lead: The range above the city.
 ---
 
-Replace this with the story.
+The Trans-Ili Alatau rises immediately south of Almaty, close enough that the
+city stays in view as you climb.
+
+Dinner beside a river, and time spent exploring higher up.

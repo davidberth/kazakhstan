@@ -8,4 +8,4 @@ lead: South, to the former capital.
 
 Flew south to Almaty, which held the capital before Astana took it.
 
-More of the family here — cousins and uncles.
+More of the family here: cousins and uncles.

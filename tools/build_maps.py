@@ -182,12 +182,51 @@ def place_labels(ax, ordered, xy):
     return out, (x1 - x0) * 0.015
 
 
-def draw_markers(ax, proj, coords, ordered, highlight, route=False):
+def geodesic_circle(lat, lon, radius_km, n=96):
+    """Points on a circle of true ground radius, in lon/lat.
+
+    Drawn on the sphere rather than as a screen-space disc, so the shape carries
+    the projection's distortion honestly: a circle looks circular in Albers near
+    the standard parallels and visibly elliptical toward the limb of the globe.
+    """
+    ang = radius_km / 6371.0
+    lat1, lon1 = math.radians(lat), math.radians(lon)
+    pts = []
+    for i in range(n + 1):
+        brg = 2 * math.pi * i / n
+        lat2 = math.asin(math.sin(lat1) * math.cos(ang)
+                         + math.cos(lat1) * math.sin(ang) * math.cos(brg))
+        lon2 = lon1 + math.atan2(
+            math.sin(brg) * math.sin(ang) * math.cos(lat1),
+            math.cos(ang) - math.sin(lat1) * math.sin(lat2),
+        )
+        pts.append((math.degrees(lon2), math.degrees(lat2)))
+    return pts
+
+
+def draw_regions(ax, proj, coords, ordered, highlight, radius_km, labels=True,
+                 route=False):
+    """Approximate circular regions rather than points.
+
+    A point implies a GPS fix on a family's home. A soft circle says "somewhere
+    around here", which is both truer to how these coordinates were derived
+    (a median over a chapter's photos) and the right amount of precision to
+    publish.
+    """
     xy = {}
     for g in ordered:
         lat, lon, _ = coords[g]
-        x, y = proj.transform_point(lon, lat, ccrs.PlateCarree())
-        xy[g] = (x, y)
+        xy[g] = proj.transform_point(lon, lat, ccrs.PlateCarree())
+
+    for g in ordered:
+        lat, lon, _ = coords[g]
+        active = highlight is None or g == highlight
+        ring = geodesic_circle(lat, lon, radius_km if active else radius_km * 0.72)
+        lons, lats = zip(*ring)
+        ax.fill(lons, lats, transform=ccrs.PlateCarree(), color=POINT,
+                alpha=0.17 if active else 0.08, zorder=5, linewidth=0)
+        ax.plot(lons, lats, transform=ccrs.PlateCarree(), color=POINT,
+                alpha=0.7 if active else 0.3, lw=1.4 if active else 0.9, zorder=6)
 
     if route and len(ordered) > 1:
         lons = [coords[g][1] for g in ordered]
@@ -195,22 +234,20 @@ def draw_markers(ax, proj, coords, ordered, highlight, route=False):
         # Geodetic transform draws great-circle arcs rather than straight lines
         # in projected space -- the honest path between two points on a sphere.
         ax.plot(lons, lats, transform=ccrs.Geodetic(), color=POINT,
-                lw=1.3, alpha=0.5, ls=(0, (5, 4)), zorder=5)
+                lw=1.3, alpha=0.45, ls=(0, (5, 4)), zorder=4)
+
+    if not labels:
+        return
 
     label_y, dx = place_labels(ax, ordered, xy)
 
     for g in ordered:
         x, y = xy[g]
         active = highlight is None or g == highlight
-        ax.scatter([x], [y], s=560 if active else 220, color=POINT,
-                   alpha=0.16, zorder=6, edgecolors="none")
-        ax.scatter([x], [y], s=72 if active else 26, color=POINT,
-                   zorder=7, edgecolors=BG, linewidths=1.2)
-
         ly = label_y[g]
         if abs(ly - y) > (ax.get_ylim()[1] - ax.get_ylim()[0]) * 0.004:
             ax.plot([x, x + dx * 0.7], [y, ly], color=POINT,
-                    lw=0.8, alpha=0.45, zorder=6)
+                    lw=0.8, alpha=0.45, zorder=7)
         ax.text(x + dx, ly, TITLES.get(g, g.title()),
                 color=INK if active else INK_DIM,
                 fontsize=15 if active else 11,
@@ -238,7 +275,10 @@ def map_globe(coords, ordered) -> tuple:
     add_land(ax, "110m", far=True)
     ax.gridlines(color=GRID, linewidth=0.5, alpha=0.7)
     add_kazakhstan_outline(ax, "110m")
-    draw_markers(ax, proj, coords, [ordered[0]], None)
+    # All four regions, unlabeled. At this scale Astana/shapan and
+    # Almaty/mountains each merge into one blob, which is the right reading:
+    # the globe answers "where on Earth", not "which chapter".
+    draw_regions(ax, proj, coords, ordered, None, radius_km=170, labels=False)
     return fig, ax
 
 
@@ -254,7 +294,7 @@ def map_overview(coords, ordered) -> tuple:
     ax.gridlines(color=GRID, linewidth=0.5, alpha=0.8,
                  xlocs=range(40, 96, 5), ylocs=range(36, 62, 5))
     add_kazakhstan_outline(ax, "50m")
-    draw_markers(ax, proj, coords, ordered, None, route=True)
+    draw_regions(ax, proj, coords, ordered, None, radius_km=48, route=True)
     return fig, ax
 
 
@@ -274,7 +314,7 @@ def map_chapter(coords, ordered, chapter) -> tuple:
     ax.gridlines(color=GRID, linewidth=0.5, alpha=0.8)
     nearby = [g for g in ordered
               if abs(coords[g][0] - lat) < span and abs(coords[g][1] - lon) < lon_span]
-    draw_markers(ax, proj, coords, nearby or [chapter], chapter)
+    draw_regions(ax, proj, coords, nearby or [chapter], chapter, radius_km=11)
     return fig, ax
 
 

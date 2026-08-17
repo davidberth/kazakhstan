@@ -4,3 +4,9 @@
 # installed separately on Windows. Not worth the setup friction for a few
 # hundred photos; revisit if the count grows by an order of magnitude.
 Pillow>=12.0.0
+
+# Story maps (tools/build_maps.py). Cartopy is the maintained successor to the
+# Basemap toolkit: Natural Earth vector features and ~30 projections, no tiles.
+# It caches Natural Earth shapefiles locally on first run, then works offline.
+matplotlib>=3.10
+cartopy>=0.25

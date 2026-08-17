@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Qazaqstan — August 2026">
+  <main class="holding">
+    <p class="kicker">Qazaqstan · Қазақстан</p>
+    <h1>A week on the steppe</h1>
+    <p class="sub">August 2026</p>
+    <p class="note">
+      Photographs and the story that goes with them are still being sorted.
+      Check back shortly.
+    </p>
+  </main>
+</Base>
+
+<style>
+  .holding {
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 0.35rem;
+    padding: 2rem clamp(1.5rem, 8vw, 8rem);
+    max-width: var(--measure);
+  }
+
+  .kicker {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sky);
+  }
+
+  h1 {
+    margin: 0.4rem 0 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 7vw, 3.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .sub {
+    margin: 0;
+    color: var(--accent);
+    font-variant-numeric: oldstyle-nums;
+  }
+
+  .note {
+    margin: 2rem 0 0;
+    color: var(--ink-dim);
+    font-size: 0.95rem;
+    border-left: 2px solid rgba(217, 164, 65, 0.35);
+    padding-left: 1rem;
+  }
+</style>

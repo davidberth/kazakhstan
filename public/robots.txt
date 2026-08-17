@@ -1,0 +1,4 @@
+# This album is unlisted. Keep it out of search results.
+# Note: this is a request, not enforcement. Well-behaved crawlers honor it.
+User-agent: *
+Disallow: /

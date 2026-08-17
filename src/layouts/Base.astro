@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+
+const {
+  title,
+  description = 'A week in Kazakhstan, August 2026.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Unlisted album: ask crawlers to stay away. This is a request, not
+         enforcement, and the site remains publicly reachable. -->
+    <meta name="robots" content="noindex, nofollow, noarchive, noimageindex" />
+
+    <!-- No social preview tags on purpose: they exist to make links spread. -->
+    <link rel="canonical" href={Astro.url.href} />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

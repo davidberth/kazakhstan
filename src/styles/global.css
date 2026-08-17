@@ -1,0 +1,57 @@
+/* Design tokens. Palette leans on steppe light: dusk sky, dry grass, warm gold. */
+:root {
+  --bg: #12151a;
+  --bg-raised: #1a1f26;
+  --ink: #eceae5;
+  --ink-dim: #a8a49b;
+  --accent: #d9a441;
+  --sky: #4a90a4;
+
+  --measure: 34rem; /* comfortable line length for prose */
+
+  --font-display: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Respect the reader's browser font size instead of forcing pixels. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  /* Photos read best against a settled, non-shifting background. */
+  min-height: 100svh;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

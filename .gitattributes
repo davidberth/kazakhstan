@@ -1,0 +1,25 @@
+# Normalize line endings. Git stores LF in the repo; Windows checkouts get CRLF
+# for text files. This keeps diffs clean between this machine and Linux CI.
+* text=auto
+
+# Files consumed by tooling that dislikes CRLF, or served verbatim.
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.astro text eol=lf
+*.css   text eol=lf
+*.js    text eol=lf
+*.mjs   text eol=lf
+*.json  text eol=lf
+*.py    text eol=lf
+*.sh    text eol=lf
+CNAME   text eol=lf
+
+# Binary. Never diff, never touch line endings.
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.webp binary
+*.avif binary
+*.gif  binary
+*.mp4  binary
+*.mov  binary

@@ -394,6 +394,14 @@ def main() -> int:
 
     photos.sort(key=lambda p: p.sort_key)
 
+    # Drop cache entries whose source file is gone. Moving a photo between
+    # chapter folders changes its key, so without this the stale entry lingers
+    # and build_maps.py -- which walks the whole cache -- keeps counting that
+    # photo's GPS toward the chapter it used to be in.
+    live_keys = {p.relative_to(SRC_DIR).as_posix() for p in sources}
+    for dead in set(cache) - live_keys:
+        del cache[dead]
+
     MANIFEST.write_text(
         json.dumps(
             {

@@ -1,0 +1,152 @@
+---
+// Full-screen photo viewer.
+//
+// Built on the native <dialog> element, which supplies the parts that are
+// tedious and easy to get wrong by hand: Esc closes it, the rest of the page
+// becomes inert, focus is trapped inside, and ::backdrop styles the dim
+// overlay. The script below only decides *which* photo to show.
+---
+
+<dialog id="lightbox" aria-label="Photo viewer">
+  <button class="close" type="button" aria-label="Close">&times;</button>
+  <button class="nav prev" type="button" aria-label="Previous photo">&#8249;</button>
+  <img id="lightbox-img" alt="" />
+  <button class="nav next" type="button" aria-label="Next photo">&#8250;</button>
+  <p class="counter" id="lightbox-count"></p>
+</dialog>
+
+<script>
+  const dlg = document.getElementById('lightbox');
+  const view = document.getElementById('lightbox-img');
+  const count = document.getElementById('lightbox-count');
+  const photos = Array.from(document.querySelectorAll('.photo img'));
+  let index = 0;
+
+  function show(n) {
+    index = (n + photos.length) % photos.length;
+    const source = photos[index];
+    // Reuse the same srcset the grid used, so a photo already downloaded at
+    // this size is served from cache instead of fetched again. sizes=100vw
+    // tells the browser to pick the widest tier for a full-screen view.
+    view.src = source.src;
+    view.srcset = source.srcset;
+    view.sizes = '100vw';
+    view.alt = source.alt;
+    count.textContent = `${index + 1} / ${photos.length}`;
+    if (!dlg.open) dlg.showModal();
+  }
+
+  photos.forEach((el, n) => {
+    el.addEventListener('click', () => show(n));
+  });
+
+  dlg.querySelector('.next').addEventListener('click', () => show(index + 1));
+  dlg.querySelector('.prev').addEventListener('click', () => show(index - 1));
+  dlg.querySelector('.close').addEventListener('click', () => dlg.close());
+
+  // Clicking the empty space around the photo closes. The check is that the
+  // click landed on the dialog itself rather than bubbling up from a child.
+  dlg.addEventListener('click', (e) => {
+    if (e.target === dlg) dlg.close();
+  });
+
+  dlg.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); show(index + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(index - 1); }
+  });
+
+  // <dialog> makes the page inert but does not stop it scrolling underneath.
+  dlg.addEventListener('close', () => document.body.style.overflow = '');
+  const openObserver = new MutationObserver(() => {
+    document.body.style.overflow = dlg.open ? 'hidden' : '';
+  });
+  openObserver.observe(dlg, { attributes: true, attributeFilter: ['open'] });
+</script>
+
+<style>
+  #lightbox {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100svh;
+    max-height: 100svh;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  #lightbox::backdrop {
+    background: rgba(8, 10, 13, 0.94);
+    backdrop-filter: blur(3px);
+  }
+
+  #lightbox img {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    max-width: calc(100vw - 5rem);
+    max-height: calc(100svh - 5rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7);
+    cursor: zoom-out;
+  }
+
+  #lightbox button {
+    position: absolute;
+    z-index: 2;
+    background: rgba(18, 21, 26, 0.65);
+    color: var(--ink);
+    border: 1px solid rgba(236, 234, 229, 0.16);
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  #lightbox button:hover {
+    background: rgba(18, 21, 26, 0.95);
+    border-color: rgba(217, 164, 65, 0.6);
+  }
+
+  .close {
+    top: 1rem;
+    right: 1rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    font-size: 1.6rem;
+  }
+
+  .nav {
+    top: 50%;
+    translate: 0 -50%;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.9rem;
+  }
+
+  .prev { left: 1rem; }
+  .next { right: 1rem; }
+
+  .counter {
+    position: absolute;
+    bottom: 1.1rem;
+    left: 0;
+    right: 0;
+    margin: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+  }
+
+  @media (max-width: 700px) {
+    #lightbox img { max-width: calc(100vw - 1.5rem); max-height: calc(100svh - 7rem); }
+    .nav { width: 2.5rem; height: 2.5rem; font-size: 1.5rem; }
+    .prev { left: 0.5rem; }
+    .next { right: 0.5rem; }
+  }
+</style>

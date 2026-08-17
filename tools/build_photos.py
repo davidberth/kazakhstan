@@ -54,7 +54,11 @@ SOURCE_SUFFIXES = {".jpg", ".jpeg", ".png", ".tif", ".tiff"}
 # Rendered widths in CSS pixels. The browser picks one from the srcset based on
 # viewport width and device pixel ratio, so a 2x phone at 400px CSS uses 800.
 # Widths larger than the source are skipped -- upscaling adds bytes, not detail.
-WIDTHS = (480, 800, 1200, 1800, 2400)
+#
+# 2400 was dropped deliberately: it was 46% of total weight for a tier only a
+# 4K display viewing full-screen would ever request. Add it back here if the
+# album grows a full-resolution lightbox and the repo size is acceptable.
+WIDTHS = (480, 800, 1200, 1800)
 
 WEBP_QUALITY = 82        # visually transparent for photographic content
 WEBP_METHOD = 6          # 0-6; higher is slower to encode, smaller output
@@ -80,7 +84,8 @@ class Photo:
     id: str
     group: str
     source: str          # repo-relative, for provenance only; never published
-    taken: str | None    # ISO 8601, or None if the camera wrote no timestamp
+    taken: str | None    # ISO 8601, or None if neither EXIF nor filename had one
+    taken_from: str | None   # "exif" | "filename" | None — how we know
     sort_key: str
     width: int           # intrinsic dimensions AFTER orientation is applied
     height: int
@@ -120,6 +125,36 @@ def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
         while block := fh.read(chunk):
             h.update(block)
     return h.hexdigest()
+
+
+# Filenames that encode a timestamp, in the shapes real cameras and apps emit:
+#   WhatsApp Image 2026-08-16 at 19.43.51
+#   IMG_20260812_143022 / PXL_20260812_143022 / 20260812_143022
+FILENAME_DATE_RE = re.compile(
+    r"(?P<y>20\d{2})[-_.]?(?P<mo>0[1-9]|1[0-2])[-_.]?(?P<d>0[1-9]|[12]\d|3[01])"
+    r"(?:[-_.\s]*(?:at)?[-_.\s]*"
+    r"(?P<h>[01]\d|2[0-3])[-_.:]?(?P<mi>[0-5]\d)[-_.:]?(?P<s>[0-5]\d)?)?"
+)
+
+
+def parse_filename_datetime(stem: str) -> tuple[str | None, str]:
+    """Recover a timestamp from the filename when EXIF has none.
+
+    WhatsApp strips EXIF but writes the date into the filename, so without this
+    every forwarded photo sorts to the end of its chapter regardless of when it
+    was actually taken.
+    """
+    m = FILENAME_DATE_RE.search(stem)
+    if not m:
+        return None, "9999"
+    try:
+        stamp = datetime(
+            int(m["y"]), int(m["mo"]), int(m["d"]),
+            int(m["h"] or 0), int(m["mi"] or 0), int(m["s"] or 0),
+        )
+    except ValueError:
+        return None, "9999"
+    return stamp.isoformat(), f"{stamp.isoformat()}.000"
 
 
 def parse_exif_datetime(exif) -> tuple[str | None, str]:
@@ -252,6 +287,10 @@ def process(path: Path) -> tuple[Photo, dict]:
         img = ImageOps.exif_transpose(raw)
         exif = raw.getexif()
         taken, sort_key = parse_exif_datetime(exif)
+        taken_from = "exif" if taken else None
+        if not taken:
+            taken, sort_key = parse_filename_datetime(path.stem)
+            taken_from = "filename" if taken else None
         gps = extract_gps(exif)
 
         img = to_srgb(img)
@@ -274,6 +313,7 @@ def process(path: Path) -> tuple[Photo, dict]:
             group=group,
             source=rel.as_posix(),
             taken=taken,
+            taken_from=taken_from,
             sort_key=f"{sort_key}|{rel.as_posix()}",
             width=img.width,
             height=img.height,

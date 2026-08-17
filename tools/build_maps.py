@@ -45,25 +45,24 @@ OUT_DIR = ROOT / "public" / "maps"
 # Chapters
 # --------------------------------------------------------------------------- #
 
-# Narrative order, which is not the same as chronological order.
-ORDER = ["astana", "steppe", "shapan", "almaty", "mountains"]
+# Narrative order, which is not the same as chronological order: the Almaty and
+# mountains photos interleave by timestamp.
+ORDER = ["astana", "shapan", "almaty", "mountains"]
 
 TITLES = {
     "astana": "Astana",
-    "steppe": "The Steppe",
     "shapan": "The Shapan",
     "almaty": "Almaty",
-    "mountains": "Mountains",
+    "mountains": "The Mountains",
 }
 
-# Used when a chapter has no GPS. Normal for a dedicated camera -- phones tag
-# location, most cameras do not. Edit these to match where you actually were.
+# Only used when a chapter has no GPS at all. All four chapters currently
+# resolve from real EXIF, so these are a safety net rather than the source.
 FALLBACK = {
     "astana": (51.1694, 71.4491),
-    "steppe": (50.40, 71.20),
-    "shapan": (51.00, 71.00),
+    "shapan": (50.9845, 71.3469),   # steppe southwest of Astana
     "almaty": (43.2380, 76.8829),
-    "mountains": (43.13, 77.08),   # Zailiysky Alatau, above Almaty
+    "mountains": (43.13, 77.08),    # Zailiysky Alatau, south of Almaty
 }
 
 # Published coordinates are rounded to this many degrees (~5 km). The image

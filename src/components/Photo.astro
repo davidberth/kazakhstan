@@ -1,0 +1,58 @@
+---
+// One responsive image.
+//
+// Three details matter here and each prevents a specific failure:
+//
+//  width/height   Reserves the right box before the bytes arrive, so the page
+//                 does not jump as photos load. The single biggest cause of an
+//                 image-heavy page feeling broken.
+//  sizes          Tells the browser how wide the image will *render* so it can
+//                 pick from srcset before layout exists. Get this wrong and it
+//                 downloads a 1800px file to show at 400px.
+//  placeholder    The ~500-byte inline preview from the pipeline, painted as a
+//                 background under the transparent-until-loaded image.
+
+import { asset } from '../lib/url.js';
+
+const { photo, sizes = '(max-width: 900px) 100vw, 900px', eager = false, alt = '' } = Astro.props;
+
+const srcset = photo.srcset.map((s) => `${asset(s.src)} ${s.w}w`).join(', ');
+const fallback = photo.srcset[photo.srcset.length - 1];
+---
+
+<figure class="photo" style={`--w:${photo.width}; --h:${photo.height}`}>
+  <img
+    src={asset(fallback.src)}
+    srcset={srcset}
+    sizes={sizes}
+    width={photo.width}
+    height={photo.height}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : 'auto'}
+    style={`background-image:url(${photo.placeholder})`}
+  />
+</figure>
+
+<style>
+  .photo {
+    margin: 0;
+  }
+
+  .photo img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--w) / var(--h);
+    background-size: cover;
+    background-position: center;
+    border-radius: 2px;
+    /* Fade in over the blurred placeholder rather than snapping. */
+    animation: reveal 0.5s ease-out;
+  }
+
+  @keyframes reveal {
+    from { opacity: 0.55; }
+    to { opacity: 1; }
+  }
+</style>

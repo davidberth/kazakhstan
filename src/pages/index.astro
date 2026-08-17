@@ -1,58 +1,249 @@
 ---
 import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import photoData from '../data/photos.json';
+import { getCollection, render } from 'astro:content';
+import { asset } from '../lib/url.js';
+
+const chapters = (await getCollection('chapters')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+// Join photos to chapters by group key, preserving the manifest's chronological
+// order within each chapter.
+const photosByGroup = new Map();
+for (const p of photoData.photos) {
+  if (!photosByGroup.has(p.group)) photosByGroup.set(p.group, []);
+  photosByGroup.get(p.group).push(p);
+}
+
+const fmt = new Intl.DateTimeFormat('en', { month: 'long', day: 'numeric' });
+function dateRange(photos) {
+  const dates = photos.filter((p) => p.taken).map((p) => new Date(p.taken));
+  if (!dates.length) return null;
+  const lo = new Date(Math.min(...dates));
+  const hi = new Date(Math.max(...dates));
+  return fmt.format(lo) === fmt.format(hi)
+    ? fmt.format(lo)
+    : `${fmt.format(lo)} – ${fmt.format(hi)}`;
+}
+
+// Give the grid rhythm: most photos take one column, every fourth spans the
+// full width as a breather. Portraits always stay narrow so they don't tower.
+function spanOf(photo, i) {
+  const portrait = photo.width / photo.height < 0.95;
+  if (portrait) return 'narrow';
+  return i % 4 === 0 ? 'wide' : 'narrow';
+}
+
+const sections = await Promise.all(
+  chapters.map(async (chapter) => {
+    const { Content } = await render(chapter);
+    const photos = photosByGroup.get(chapter.data.group) ?? [];
+    return { chapter, Content, photos, range: dateRange(photos) };
+  })
+);
+
+const total = photoData.photos.length;
 ---
 
 <Base title="Qazaqstan — August 2026">
-  <main class="holding">
-    <p class="kicker">Qazaqstan · Қазақстан</p>
-    <h1>A week on the steppe</h1>
-    <p class="sub">August 2026</p>
-    <p class="note">
-      Photographs and the story that goes with them are still being sorted.
-      Check back shortly.
-    </p>
-  </main>
+  <header class="hero">
+    <img class="globe" src={asset('maps/globe.png')} width="880" height="880" alt="" />
+    <div class="hero-text">
+      <p class="kicker">Qazaqstan · Қазақстан</p>
+      <h1>A week on the steppe</h1>
+      <p class="sub">August 2026</p>
+    </div>
+    <nav class="contents" aria-label="Chapters">
+      {sections.map(({ chapter, range }) => (
+        <a href={`#${chapter.data.group}`}>
+          <span class="num">{String(chapter.data.order).padStart(2, '0')}</span>
+          <span class="name">{chapter.data.title}</span>
+          {range && <span class="when">{range}</span>}
+        </a>
+      ))}
+    </nav>
+  </header>
+
+  {sections.map(({ chapter, Content, photos, range }, ci) => (
+    <section class="chapter" id={chapter.data.group}>
+      <div class="chapter-head">
+        <p class="kicker">
+          {String(chapter.data.order).padStart(2, '0')}
+          {chapter.data.place && <> · {chapter.data.place}</>}
+        </p>
+        <h2>{chapter.data.title}</h2>
+        {chapter.data.lead && <p class="lead">{chapter.data.lead}</p>}
+        {range && <p class="when">{range}</p>}
+        <div class="prose"><Content /></div>
+      </div>
+
+      <img
+        class="chapter-map"
+        src={asset(`maps/${chapter.data.group}.png`)}
+        width="1320" height="825"
+        loading="lazy" decoding="async"
+        alt={`Map showing ${chapter.data.place ?? chapter.data.title}`}
+      />
+
+      <div class="grid">
+        {photos.map((photo, i) => (
+          <div class={`cell ${spanOf(photo, i)}`}>
+            <Photo
+              photo={photo}
+              eager={ci === 0 && i === 0}
+              sizes={spanOf(photo, i) === 'wide'
+                ? '(max-width: 900px) 100vw, 1100px'
+                : '(max-width: 900px) 100vw, 540px'}
+              alt={`${chapter.data.title}${photo.taken ? `, ${fmt.format(new Date(photo.taken))}` : ''}`}
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <footer class="foot">
+    <p>{total} photographs · {sections.length} chapters</p>
+  </footer>
 </Base>
 
 <style>
-  .holding {
+  .hero {
+    position: relative;
     min-height: 100svh;
     display: grid;
     align-content: center;
-    justify-items: start;
-    gap: 0.35rem;
-    padding: 2rem clamp(1.5rem, 8vw, 8rem);
-    max-width: var(--measure);
+    gap: 2.5rem;
+    padding: 4rem clamp(1.5rem, 7vw, 7rem);
+    overflow: hidden;
   }
+
+  .globe {
+    position: absolute;
+    right: -14%;
+    top: 50%;
+    translate: 0 -50%;
+    width: min(78vh, 720px);
+    height: auto;
+    opacity: 0.5;
+    pointer-events: none;
+    mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 74%);
+  }
+
+  .hero-text { position: relative; }
 
   .kicker {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--sky);
   }
 
   h1 {
-    margin: 0.4rem 0 0;
+    margin: 0.5rem 0 0;
     font-family: var(--font-display);
     font-weight: 400;
-    font-size: clamp(2.25rem, 7vw, 3.75rem);
-    line-height: 1.1;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
   }
 
   .sub {
-    margin: 0;
+    margin: 0.35rem 0 0;
     color: var(--accent);
-    font-variant-numeric: oldstyle-nums;
   }
 
-  .note {
-    margin: 2rem 0 0;
+  .contents {
+    position: relative;
+    display: grid;
+    gap: 0.15rem;
+    max-width: 26rem;
+  }
+
+  .contents a {
+    display: grid;
+    grid-template-columns: 2.2rem 1fr auto;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(236, 234, 229, 0.09);
+  }
+
+  .contents a:hover { color: var(--accent); }
+  .contents .num { color: var(--sky); font-size: 0.8rem; letter-spacing: 0.1em; }
+  .contents .name { font-family: var(--font-display); font-size: 1.1rem; }
+  .contents .when { color: var(--ink-dim); font-size: 0.8rem; }
+
+  .chapter {
+    padding: clamp(3rem, 9vw, 7rem) clamp(1rem, 5vw, 4rem);
+    border-top: 1px solid rgba(236, 234, 229, 0.07);
+  }
+
+  .chapter-head {
+    max-width: var(--measure);
+    margin: 0 auto 2.5rem;
+  }
+
+  h2 {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.9rem, 5vw, 2.75rem);
+    line-height: 1.1;
+  }
+
+  .lead {
+    margin: 0.6rem 0 0;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+
+  .chapter-head .when {
+    margin: 0.3rem 0 0;
+    color: var(--accent);
+    font-size: 0.85rem;
+  }
+
+  .prose { margin-top: 1.25rem; color: var(--ink-dim); }
+  .prose :global(p) { margin: 0 0 1rem; }
+
+  .chapter-map {
+    display: block;
+    width: 100%;
+    max-width: 1100px;
+    height: auto;
+    margin: 0 auto 2.5rem;
+    border-radius: 3px;
+    opacity: 0.92;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(0.5rem, 1.4vw, 1rem);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .cell.wide { grid-column: 1 / -1; }
+
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+    .cell.wide { grid-column: auto; }
+    .globe { opacity: 0.28; right: -30%; }
+  }
+
+  .foot {
+    padding: 4rem 2rem 6rem;
+    text-align: center;
     color: var(--ink-dim);
-    font-size: 0.95rem;
-    border-left: 2px solid rgba(217, 164, 65, 0.35);
-    padding-left: 1rem;
+    font-size: 0.85rem;
+    border-top: 1px solid rgba(236, 234, 229, 0.07);
   }
 </style>

@@ -133,28 +133,47 @@ def new_figure(proj, size=(12, 7.5)):
     return fig, ax
 
 
-def add_land(ax, scale="50m", far=False):
-    ax.add_feature(cfeature.OCEAN.with_scale(scale), facecolor=OCEAN, zorder=0)
-    ax.add_feature(cfeature.LAND.with_scale(scale),
-                   facecolor=LAND_FAR if far else LAND, zorder=1)
-    ax.add_feature(cfeature.LAKES.with_scale(scale), facecolor=OCEAN,
-                   edgecolor=COAST, linewidth=0.4, zorder=2)
+# The globe is rendered small and viewed at phone size, where the subtle
+# land/ocean separation that reads well on a wide chapter map disappears
+# entirely. It gets its own higher-contrast palette: darker water, lighter land,
+# brighter coastlines.
+GLOBE_COLORS = {
+    "ocean": "#0d151f",
+    "land": "#2c3745",
+    "coast": "#5d6a78",
+    "border": "#4b5665",
+    "kz": "#7fd0e6",
+    "kz_width": 2.2,
+}
+
+
+def add_land(ax, scale="50m", colors=None):
+    c = colors or {}
+    ocean = c.get("ocean", OCEAN)
+    land = c.get("land", LAND)
+    coast = c.get("coast", COAST)
+    border = c.get("border", BORDER)
+    ax.add_feature(cfeature.OCEAN.with_scale(scale), facecolor=ocean, zorder=0)
+    ax.add_feature(cfeature.LAND.with_scale(scale), facecolor=land, zorder=1)
+    ax.add_feature(cfeature.LAKES.with_scale(scale), facecolor=ocean,
+                   edgecolor=coast, linewidth=0.4, zorder=2)
     ax.add_feature(cfeature.COASTLINE.with_scale(scale),
-                   edgecolor=COAST, linewidth=0.6, zorder=3)
+                   edgecolor=coast, linewidth=0.7, zorder=3)
     ax.add_feature(cfeature.BORDERS.with_scale(scale),
-                   edgecolor=BORDER, linewidth=0.7, zorder=3)
+                   edgecolor=border, linewidth=0.7, zorder=3)
 
 
-def add_kazakhstan_outline(ax, scale="50m"):
+def add_kazakhstan_outline(ax, scale="50m", colors=None):
     """Trace the subject country a little brighter than its neighbors."""
+    c = colors or {}
     path = shpreader.natural_earth(resolution=scale, category="cultural",
                                    name="admin_0_countries")
     for rec in shpreader.Reader(path).records():
         iso = rec.attributes.get("ADM0_A3") or rec.attributes.get("ISO_A3")
         if iso == "KAZ":
             ax.add_geometries([rec.geometry], ccrs.PlateCarree(),
-                              facecolor="none", edgecolor=BORDER_KZ,
-                              linewidth=1.3, zorder=4)
+                              facecolor="none", edgecolor=c.get("kz", BORDER_KZ),
+                              linewidth=c.get("kz_width", 1.3), zorder=4)
             return
 
 
@@ -205,7 +224,7 @@ def geodesic_circle(lat, lon, radius_km, n=96):
 
 
 def draw_regions(ax, proj, coords, ordered, highlight, radius_km, labels=True,
-                 route=False):
+                 route=False, boost=1.0):
     """Approximate circular regions rather than points.
 
     A point implies a GPS fix on a family's home. A soft circle says "somewhere
@@ -224,9 +243,12 @@ def draw_regions(ax, proj, coords, ordered, highlight, radius_km, labels=True,
         ring = geodesic_circle(lat, lon, radius_km if active else radius_km * 0.72)
         lons, lats = zip(*ring)
         ax.fill(lons, lats, transform=ccrs.PlateCarree(), color=POINT,
-                alpha=0.17 if active else 0.08, zorder=5, linewidth=0)
+                alpha=min(1.0, (0.17 if active else 0.08) * boost),
+                zorder=5, linewidth=0)
         ax.plot(lons, lats, transform=ccrs.PlateCarree(), color=POINT,
-                alpha=0.7 if active else 0.3, lw=1.4 if active else 0.9, zorder=6)
+                alpha=min(1.0, (0.7 if active else 0.3) * boost),
+                lw=(1.4 if active else 0.9) * (1.4 if boost > 1 else 1.0),
+                zorder=6)
 
     if route and len(ordered) > 1:
         lons = [coords[g][1] for g in ordered]
@@ -271,14 +293,16 @@ def map_globe(coords, ordered) -> tuple:
     """Orthographic: where on Earth this is. The limb is the point."""
     proj = ccrs.Orthographic(central_longitude=KZ_LON, central_latitude=KZ_LAT)
     fig, ax = new_figure(proj, size=(8, 8))
+    ax.patch.set_facecolor(GLOBE_COLORS["ocean"])
     ax.set_global()
-    add_land(ax, "110m", far=True)
-    ax.gridlines(color=GRID, linewidth=0.5, alpha=0.7)
-    add_kazakhstan_outline(ax, "110m")
+    add_land(ax, "110m", colors=GLOBE_COLORS)
+    ax.gridlines(color="#33404f", linewidth=0.6, alpha=0.8)
+    add_kazakhstan_outline(ax, "110m", colors=GLOBE_COLORS)
     # All four regions, unlabeled. At this scale Astana/shapan and
     # Almaty/mountains each merge into one blob, which is the right reading:
     # the globe answers "where on Earth", not "which chapter".
-    draw_regions(ax, proj, coords, ordered, None, radius_km=170, labels=False)
+    draw_regions(ax, proj, coords, ordered, None, radius_km=175, labels=False,
+                 boost=1.9)
     return fig, ax
 
 

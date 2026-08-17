@@ -130,9 +130,9 @@ const total = photoData.photos.length;
     translate: 0 -50%;
     width: min(78vh, 720px);
     height: auto;
-    opacity: 0.5;
+    opacity: 0.62;
     pointer-events: none;
-    mask-image: radial-gradient(circle at 50% 50%, #000 52%, transparent 74%);
+    mask-image: radial-gradient(circle at 50% 50%, #000 56%, transparent 78%);
   }
 
   .hero-text { position: relative; }
@@ -239,7 +239,25 @@ const total = photoData.photos.length;
   @media (max-width: 700px) {
     .grid { grid-template-columns: 1fr; }
     .cell.wide { grid-column: auto; }
-    .globe { opacity: 0.28; right: -30%; }
+
+    /* On a phone there is no room to bleed the globe off the edge as a faint
+       backdrop — it just ends up half off-screen and too dim to read. Promote
+       it to a real element in the flow instead: centered, full strength, above
+       the title. */
+    .hero {
+      align-content: start;
+      padding-top: 3rem;
+      gap: 1.75rem;
+    }
+
+    .globe {
+      position: static;
+      translate: none;
+      width: min(66vw, 300px);
+      margin: 0 auto;
+      opacity: 1;
+      mask-image: radial-gradient(circle at 50% 50%, #000 68%, transparent 84%);
+    }
   }
 
   .foot {

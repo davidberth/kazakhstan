@@ -1,0 +1,6 @@
+# Image pipeline. Deliberately minimal — Pillow plus the standard library.
+#
+# pyvips would be faster on large batches, but it needs libvips binaries
+# installed separately on Windows. Not worth the setup friction for a few
+# hundred photos; revisit if the count grows by an order of magnitude.
+Pillow>=12.0.0

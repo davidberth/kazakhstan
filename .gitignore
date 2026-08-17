@@ -1,6 +1,7 @@
 # Full-resolution originals — never committed. Keep these in durable backup storage.
 # Only optimized derivatives under public/photos/ belong in git.
-photos/originals/
+photos/originals/*
+!photos/originals/.gitkeep
 photos/**/*.CR2
 photos/**/*.NEF
 photos/**/*.ARW

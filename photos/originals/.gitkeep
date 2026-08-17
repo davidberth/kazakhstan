@@ -1,0 +1,11 @@
+Drop full-resolution originals in this directory.
+
+Nothing here is committed to git — only the optimized derivatives the pipeline
+writes to public/photos/. Keep your own backup of these files.
+
+Subdirectories become groups:
+
+    photos/originals/almaty/DSC_0142.jpg   -> group "almaty"
+    photos/originals/DSC_0198.jpg          -> group "unsorted"
+
+Then run:  python tools/build_photos.py

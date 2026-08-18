@@ -1,8 +1,10 @@
-# kz.lixel.io — Kazakhstan photo story
+# lixel.io/kazakhstan — Kazakhstan photo story
 
 A story-driven photo album from a week in Kazakhstan (August 2026), visiting my wife's
-extended family. Chronological narrative with photos, not a gallery grid. Published at
-`https://kz.lixel.io`.
+extended family. Chronological narrative with photos, not a gallery grid.
+
+**Live at <https://lixel.io/kazakhstan/>.** Four chapters, 86 photos, bilingual
+English/Kazakh prose. Aizhan is David's wife; her family hosted the trip.
 
 ## Who you're working with
 
@@ -38,10 +40,10 @@ What this means in practice:
 
 ### Honest note on privacy
 
-The site is public and the repo is public. `kz.lixel.io` will appear in public Certificate
-Transparency logs as soon as Pages issues a cert, so the hostname is discoverable — this is
-obscurity, not protection. `noindex` prevents search-engine discovery, which covers the
-realistic case. Do not describe the album as private or hidden.
+The site is public and the repo is public, so every photo is browsable at
+`github.com/davidberth/kazakhstan` as well as on the site. `noindex` and `robots.txt`
+prevent search-engine discovery, which covers the realistic case. That is obscurity,
+not protection. Do not describe the album as private or hidden.
 
 ## Infrastructure facts
 
@@ -64,33 +66,25 @@ lixel.io          NS     ns-cloud-b{1..4}.googledomains.com
 - Zone TTL is 300s, so record changes take effect within minutes.
 - Existing site repo: `davidberth/davidberth.github.io` (Jekyll, public)
 
-**Mail runs on this domain.** Never touch MX, SPF, DKIM, or DMARC records. Adding
-`kz` is a single additive CNAME and must not modify anything else in the zone.
+**Mail runs on this domain.** Never touch MX, SPF, DKIM, or DMARC records. No DNS
+change is needed for this project as it stands.
 
-To publish: `kz.lixel.io` → CNAME → `davidberth.github.io`, plus a `CNAME` file containing
-`kz.lixel.io` at the site root (Astro: `public/CNAME` — already in place).
+The site is served from the GitHub Pages **project path**, not a subdomain.
 
-**Current state:** Pages is enabled (`build_type: workflow`) and the site deploys cleanly,
-but GitHub has not registered the custom domain (`cname: null`) because `kz.lixel.io` does
-not resolve yet. Until the Squarespace CNAME record is added, the site serves from the
-fallback project path: <https://lixel.io/kazakhstan/>. Once DNS resolves:
+A `kz.lixel.io` subdomain was scoped and then dropped: it needed a DNS record at
+Squarespace, and the project path was judged good enough for a small personal album.
+`public/CNAME` was removed accordingly. **The DNS record was never created and
+`kz.lixel.io` does not resolve** — do not reference it as if it works.
 
-```powershell
-gh api --method PUT repos/davidberth/kazakhstan/pages -f cname=kz.lixel.io
-# wait for cert issuance, then:
-gh api --method PUT repos/davidberth/kazakhstan/pages -F https_enforced=true
-```
+Because it is a project site, everything is served under `/kazakhstan`. This is the
+single most common source of broken links here:
 
-### Why the repo is named `kazakhstan`
+- `astro.config.mjs` sets `site: 'https://lixel.io'` and `base: '/kazakhstan'`.
+- `BASE_URL` carries **no trailing slash** in this Astro version. Never build an asset
+  URL by string concatenation; always use `asset()` from `src/lib/url.js`.
+- The photo manifest stores **relative** paths (`photos/foo.webp`) for the same reason.
 
-GitHub Pages serves a *project* site at `<user site root>/<repo name>/`. The user site
-`davidberth/davidberth.github.io` owns `lixel.io`, so this repo's fallback URL is
-`lixel.io/<repo name>/`. The repo was briefly named `kz.lixel.io`, which produced the
-stuttering `lixel.io/kz.lixel.io/`. Renamed to `kazakhstan` so the fallback reads cleanly.
-
-The repo name is invisible once the custom domain binds — `kz.lixel.io` is the canonical
-URL and the fallback path redirects to it. **Do not rename the repo again**; the fallback
-path is the only thing that would break, but it is also what anyone is using today.
+Moving to a subdomain later is a change to `base` plus a DNS record, nothing else.
 
 ## Architecture
 
@@ -118,7 +112,11 @@ dist/                 static output -> GitHub Actions -> GitHub Pages
   then strip the tag).
 - **Strip GPS and identifying EXIF** from derivatives. Originals keep it; the web copies
   should not carry location data for someone else's family home.
-- Emit derivatives at a fixed set of widths, WebP plus JPEG fallback.
+- Emit derivatives at `WIDTHS = (480, 800, 1200, 1800)`, WebP only. A 2400 tier was
+  removed: it was 46% of total weight for a size only a 4K display viewing full-screen
+  would request. Committed derivatives are ~48 MB for 86 photos.
+- Recover a timestamp from the filename when EXIF has none (WhatsApp strips EXIF but
+  writes the date into the name). `taken_from` records which source was used.
 - Emit a tiny inline placeholder (blurhash or a ~20px base64 JPEG) so layout doesn't jump.
 - Record intrinsic dimensions in the manifest — every `<img>` needs `width`/`height` to
   avoid cumulative layout shift.
@@ -128,9 +126,15 @@ dist/                 static output -> GitHub Actions -> GitHub Pages
 
 ### Content
 
-Story text lives in Markdown (Astro content collections), one file per chapter, with
-frontmatter referencing photo IDs from the manifest. Prose and layout stay separate from
-image machinery.
+Story text lives in Markdown (Astro content collections) at `src/content/chapters/`,
+one file per chapter. Photos join to chapters by the `group` key, which is the source
+folder name under `photos/originals/` with any numeric prefix stripped — chapters do not
+list photo IDs individually.
+
+Each chapter carries Kazakh translations in frontmatter (`title_kk`, `place_kk`,
+`lead_kk`, `body_kk`) rendered beside the English, with `lang="kk"` on the elements.
+**The Kazakh is machine-produced and was flagged to David for a native reader's review.**
+Chapters: astana, shapan, almaty, mountains.
 
 ## Repo conventions
 

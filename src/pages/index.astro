@@ -64,6 +64,8 @@ const sections = await Promise.all(
 );
 
 const total = photoData.photos.length;
+const loopCount = photoData.photos.filter((p) => p.loop).length;
+const stillCount = total - loopCount;
 ---
 
 <Base title="Qazaqstan, August 2026">
@@ -143,7 +145,11 @@ const total = photoData.photos.length;
   ))}
 
   <footer class="foot">
-    <p>{total} photographs · {sections.length} chapters</p>
+    <p>
+      {stillCount} photograph{stillCount === 1 ? '' : 's'}
+      {loopCount > 0 && <> · {loopCount} loop{loopCount === 1 ? '' : 's'}</>}
+      {' · '}{sections.length} chapters
+    </p>
   </footer>
 
   <Lightbox />

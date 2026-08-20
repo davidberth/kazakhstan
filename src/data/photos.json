@@ -1,5 +1,5 @@
 {
-  "count": 84,
+  "count": 88,
   "widths": [
     480,
     800,
@@ -568,6 +568,27 @@
       "loop": null
     },
     {
+      "id": "02-shapan-vid-20260812-wa0015",
+      "group": "shapan",
+      "taken": "2026-08-12T00:00:00",
+      "taken_from": "filename",
+      "width": 720,
+      "height": 1280,
+      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAcABADASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAABQIDBP/EACIQAAIBBAIBBQAAAAAAAAAAAAEDAgAEERIhMQUTIkFRgf/EABUBAQEAAAAAAAAAAAAAAAAAAAMC/8QAGBEBAQADAAAAAAAAAAAAAAAAAQACMWH/2gAMAwEAAhEDEQA/ALLe0N0dhiIHQ+BW1iFWWqttpyPJH3Q0bma1wE8+6kGre8BpIxqD3yKAGfJi/QuL1K5qiZjI/Bik12dxBkRJpECOexR3irlttZSguXG/GecVNrmkhsmSlLPZPVW8j2X/2Q==",
+      "srcset": [
+        {
+          "w": 720,
+          "src": "photos/02-shapan-vid-20260812-wa0015-720-37ffff37.webp"
+        }
+      ],
+      "loop": {
+        "src": "video/02-shapan-vid-20260812-wa0015-37ffff37.mp4",
+        "start": 5.0,
+        "duration": 5.0,
+        "source_duration": 13.17
+      }
+    },
+    {
       "id": "01-astana-20260812-043050",
       "group": "astana",
       "taken": "2026-08-12T04:30:50",
@@ -1070,6 +1091,27 @@
         }
       ],
       "loop": null
+    },
+    {
+      "id": "01-astana-20260812-082357",
+      "group": "astana",
+      "taken": "2026-08-12T08:23:57",
+      "taken_from": "filename",
+      "width": 1920,
+      "height": 1080,
+      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAJABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAwT/xAAiEAABAwMDBQAAAAAAAAAAAAACAAEDBBExEhMiMjRBgbH/xAAVAQEBAAAAAAAAAAAAAAAAAAACA//EABcRAQADAAAAAAAAAAAAAAAAAAASQmH/2gAMAwEAAhEDEQA/ACMDIhcuNsPdPBI0cgntkWjyL5U9Z3EaSi6y9/UcVrJ//9k=",
+      "srcset": [
+        {
+          "w": 1200,
+          "src": "photos/01-astana-20260812-082357-1200-74477573.webp"
+        }
+      ],
+      "loop": {
+        "src": "video/01-astana-20260812-082357-74477573.mp4",
+        "start": 0.0,
+        "duration": 2.25,
+        "source_duration": 2.6
+      }
     },
     {
       "id": "01-astana-20260812-083621",
@@ -1884,6 +1926,27 @@
       "loop": null
     },
     {
+      "id": "04-mountains-20260814-042710",
+      "group": "mountains",
+      "taken": "2026-08-14T04:27:10",
+      "taken_from": "filename",
+      "width": 1920,
+      "height": 1080,
+      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAJABADASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAABAP/xAAeEAACAQQDAQAAAAAAAAAAAAABAgADBBFBMTOB8P/EABUBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFREBAQAAAAAAAAAAAAAAAAAAAQD/2gAMAwEAAhEDEQA/AD3tB6Yd2qo52M8QOHNABXUY4GzL3/dc/bEGvcvslJL/2Q==",
+      "srcset": [
+        {
+          "w": 1200,
+          "src": "photos/04-mountains-20260814-042710-1200-3465854d.webp"
+        }
+      ],
+      "loop": {
+        "src": "video/04-mountains-20260814-042710-3465854d.mp4",
+        "start": 12.75,
+        "duration": 5.0,
+        "source_duration": 20.25
+      }
+    },
+    {
       "id": "04-mountains-20260814-043045",
       "group": "mountains",
       "taken": "2026-08-14T04:30:44",
@@ -2274,6 +2337,27 @@
         }
       ],
       "loop": null
+    },
+    {
+      "id": "03-almaty-whatsapp-video-2026-08-18-at-100148-am",
+      "group": "almaty",
+      "taken": "2026-08-18T10:01:48",
+      "taken_from": "filename",
+      "width": 1024,
+      "height": 576,
+      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAJABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwQF/8QAIRAAAQMDBAMAAAAAAAAAAAAAAQIDBAARMQUSIXI0NWH/xAAUAQEAAAAAAAAAAAAAAAAAAAAD/8QAFREBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhEDEQA/ABEJqJJW9behSSLYA+3qZUVx5pbiFFAcXgngDNhWjqXr3OtHH8WP2FEWv//Z",
+      "srcset": [
+        {
+          "w": 1024,
+          "src": "photos/03-almaty-whatsapp-video-2026-08-18-at-100148-am-1024-c657b273.webp"
+        }
+      ],
+      "loop": {
+        "src": "video/03-almaty-whatsapp-video-2026-08-18-at-100148-am-c657b273.mp4",
+        "start": 14.75,
+        "duration": 5.0,
+        "source_duration": 34.67
+      }
     },
     {
       "id": "01-astana-4",

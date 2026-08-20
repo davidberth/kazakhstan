@@ -48,6 +48,11 @@ CUT_FLOOR = 0.08          # below this, nothing counts as a cut at any ratio
 # closure precisely because nothing happens, and wins.
 MIN_MOTION = 0.08         # mean normalized motion required of a loop
 
+# A clip only slightly longer than the window was almost certainly trimmed by
+# hand to exactly the wanted moment. Searching inside it for a "better" window
+# just shaves a second off a deliberate edit, so use the whole thing.
+WHOLE_CLIP_TOLERANCE = 1.3   # times LOOP_SECONDS
+
 VIDEO_SUFFIXES = {".mp4", ".mov", ".m4v", ".avi", ".mkv", ".webm", ".3gp"}
 
 # Where to look for the binaries. PATH first, then the usual places a Windows
@@ -196,8 +201,11 @@ def choose_window(frames: np.ndarray, seconds: float = LOOP_SECONDS,
     between two shots reads as broken rather than as a loop.
     """
     win = max(2, int(round(seconds * proxy_fps)))
-    if len(frames) <= win:
-        return 0.0, len(frames) / proxy_fps, {"note": "clip shorter than window"}
+    if len(frames) <= win * WHOLE_CLIP_TOLERANCE:
+        whole = len(frames) / proxy_fps
+        note = ("clip shorter than window" if len(frames) <= win
+                else "clip close to window length; treated as a deliberate trim")
+        return 0.0, whole, {"note": note}
 
     motion, sharpness = frame_metrics(frames)
     m_norm, s_norm = _norm(motion), _norm(sharpness)

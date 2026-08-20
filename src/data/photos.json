@@ -568,27 +568,6 @@
       "loop": null
     },
     {
-      "id": "02-shapan-vid-20260812-wa0015",
-      "group": "shapan",
-      "taken": "2026-08-12T00:00:00",
-      "taken_from": "filename",
-      "width": 720,
-      "height": 1280,
-      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAcABADASIAAhEBAxEB/8QAFwABAAMAAAAAAAAAAAAAAAAABQIDBP/EACIQAAIBBAIBBQAAAAAAAAAAAAEDAgAEERIhMQUTIkFRgf/EABUBAQEAAAAAAAAAAAAAAAAAAAMC/8QAGBEBAQADAAAAAAAAAAAAAAAAAQACMWH/2gAMAwEAAhEDEQA/ALLe0N0dhiIHQ+BW1iFWWqttpyPJH3Q0bma1wE8+6kGre8BpIxqD3yKAGfJi/QuL1K5qiZjI/Bik12dxBkRJpECOexR3irlttZSguXG/GecVNrmkhsmSlLPZPVW8j2X/2Q==",
-      "srcset": [
-        {
-          "w": 720,
-          "src": "photos/02-shapan-vid-20260812-wa0015-720-37ffff37.webp"
-        }
-      ],
-      "loop": {
-        "src": "video/02-shapan-vid-20260812-wa0015-37ffff37.mp4",
-        "start": 5.0,
-        "duration": 5.0,
-        "source_duration": 13.17
-      }
-    },
-    {
       "id": "01-astana-20260812-043050",
       "group": "astana",
       "taken": "2026-08-12T04:30:50",
@@ -1672,6 +1651,27 @@
         }
       ],
       "loop": null
+    },
+    {
+      "id": "02-shapan-20260812-115600",
+      "group": "shapan",
+      "taken": "2026-08-12T11:56:00",
+      "taken_from": "filename",
+      "width": 1920,
+      "height": 1080,
+      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAJABADASIAAhEBAxEB/8QAFwAAAwEAAAAAAAAAAAAAAAAAAAEDBv/EAB8QAAECBgMAAAAAAAAAAAAAAAEAAwIEBRESMjNxgf/EABQBAQAAAAAAAAAAAAAAAAAAAAH/xAAXEQEBAQEAAAAAAAAAAAAAAAARACFB/9oADAMBAAIRAxEAPwDMUp4MTeZA1IRVHQ9NZgWvCFCX5PEn9x0g7Lhf/9k=",
+      "srcset": [
+        {
+          "w": 1200,
+          "src": "photos/02-shapan-20260812-115600-1200-89f8be62.webp"
+        }
+      ],
+      "loop": {
+        "src": "video/02-shapan-20260812-115600-89f8be62.mp4",
+        "start": 0.0,
+        "duration": 5.62,
+        "source_duration": 5.6
+      }
     },
     {
       "id": "01-astana-whatsapp-image-2026-08-12-at-211518",

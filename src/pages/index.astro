@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
 import Lightbox from '../components/Lightbox.astro';
+import LoopPlayer from '../components/LoopPlayer.astro';
 import photoData from '../data/photos.json';
 import { getCollection, render } from 'astro:content';
 import { asset } from '../lib/url.js';
@@ -146,6 +147,7 @@ const total = photoData.photos.length;
   </footer>
 
   <Lightbox />
+  <LoopPlayer />
 </Base>
 
 <style>

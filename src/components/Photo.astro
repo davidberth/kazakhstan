@@ -1,7 +1,7 @@
 ---
-// One responsive image.
+// One responsive image, or a short muted loop.
 //
-// Three details matter here and each prevents a specific failure:
+// Three details matter for the still case, each preventing a specific failure:
 //
 //  width/height   Reserves the right box before the bytes arrive, so the page
 //                 does not jump as photos load. The single biggest cause of an
@@ -11,6 +11,11 @@
 //                 downloads a 1800px file to show at 400px.
 //  placeholder    The ~500-byte inline preview from the pipeline, painted as a
 //                 background under the transparent-until-loaded image.
+//
+// A loop carries the same poster srcset, dimensions and placeholder as a still,
+// so everything above applies unchanged. It renders <video> instead of <img>
+// and gets the poster as its `poster` attribute, which means the grid shows a
+// real frame instantly rather than a black rectangle.
 
 import { asset } from '../lib/url.js';
 
@@ -18,21 +23,39 @@ const { photo, sizes = '(max-width: 900px) 100vw, 900px', eager = false, alt = '
 
 const srcset = photo.srcset.map((s) => `${asset(s.src)} ${s.w}w`).join(', ');
 const fallback = photo.srcset[photo.srcset.length - 1];
+const poster = photo.srcset.find((s) => s.w >= 1200) ?? fallback;
 ---
 
 <figure class="photo" style={`--w:${photo.width}; --h:${photo.height}`}>
-  <img
-    src={asset(fallback.src)}
-    srcset={srcset}
-    sizes={sizes}
-    width={photo.width}
-    height={photo.height}
-    alt={alt}
-    loading={eager ? 'eager' : 'lazy'}
-    decoding="async"
-    fetchpriority={eager ? 'high' : 'auto'}
-    style={`background-image:url(${photo.placeholder})`}
-  />
+  {photo.loop ? (
+    <video
+      class="loop"
+      src={asset(photo.loop.src)}
+      poster={asset(poster.src)}
+      width={photo.width}
+      height={photo.height}
+      loop
+      muted
+      playsinline
+      preload="none"
+      aria-label={alt}
+      data-loop
+      style={`background-image:url(${photo.placeholder})`}
+    ></video>
+  ) : (
+    <img
+      src={asset(fallback.src)}
+      srcset={srcset}
+      sizes={sizes}
+      width={photo.width}
+      height={photo.height}
+      alt={alt}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchpriority={eager ? 'high' : 'auto'}
+      style={`background-image:url(${photo.placeholder})`}
+    />
+  )}
 </figure>
 
 <style>
@@ -40,12 +63,15 @@ const fallback = photo.srcset[photo.srcset.length - 1];
     margin: 0;
   }
 
-  .photo img {
+  .photo img,
+  .photo video {
+    display: block;
     width: 100%;
     height: auto;
     aspect-ratio: var(--w) / var(--h);
     background-size: cover;
     background-position: center;
+    object-fit: cover;
     /* A hairline frame plus a soft drop shadow. The border alone reads as flat
        on a dark ground; the shadow is what makes photos sit above the page. */
     border: 1px solid rgba(236, 234, 229, 0.14);
@@ -57,10 +83,29 @@ const fallback = photo.srcset[photo.srcset.length - 1];
     animation: reveal 0.5s ease-out;
   }
 
-  .photo img:hover {
+  .photo img:hover,
+  .photo video:hover {
     border-color: rgba(217, 164, 65, 0.55);
     box-shadow: 0 4px 22px rgba(0, 0, 0, 0.6);
     transform: translateY(-2px);
+  }
+
+  /* Mark loops so they are distinguishable from stills at a glance. */
+  .photo {
+    position: relative;
+  }
+
+  .photo:has(video)::after {
+    content: '';
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(18, 21, 26, 0.6);
+    pointer-events: none;
   }
 
   @keyframes reveal {

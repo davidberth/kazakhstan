@@ -11,6 +11,7 @@
   <button class="close" type="button" aria-label="Close">&times;</button>
   <button class="nav prev" type="button" aria-label="Previous photo">&#8249;</button>
   <img id="lightbox-img" alt="" />
+  <video id="lightbox-video" loop muted playsinline controls hidden></video>
   <button class="nav next" type="button" aria-label="Next photo">&#8250;</button>
   <p class="counter" id="lightbox-count"></p>
 </dialog>
@@ -18,20 +19,36 @@
 <script>
   const dlg = document.getElementById('lightbox');
   const view = document.getElementById('lightbox-img');
+  const player = document.getElementById('lightbox-video');
   const count = document.getElementById('lightbox-count');
-  const photos = Array.from(document.querySelectorAll('.photo img'));
+  const photos = Array.from(document.querySelectorAll('.photo img, .photo video'));
   let index = 0;
 
   function show(n) {
     index = (n + photos.length) % photos.length;
     const source = photos[index];
-    // Reuse the same srcset the grid used, so a photo already downloaded at
-    // this size is served from cache instead of fetched again. sizes=100vw
-    // tells the browser to pick the widest tier for a full-screen view.
-    view.src = source.src;
-    view.srcset = source.srcset;
-    view.sizes = '100vw';
-    view.alt = source.alt;
+    const isLoop = source.tagName === 'VIDEO';
+
+    player.pause();
+    view.hidden = isLoop;
+    player.hidden = !isLoop;
+
+    if (isLoop) {
+      // Same file the grid already fetched, so it plays straight from cache.
+      player.src = source.currentSrc || source.src;
+      player.poster = source.poster;
+      player.setAttribute('aria-label', source.getAttribute('aria-label') || '');
+      player.play().catch(() => {});
+    } else {
+      // Reuse the same srcset the grid used, so a photo already downloaded at
+      // this size is served from cache instead of fetched again. sizes=100vw
+      // tells the browser to pick the widest tier for a full-screen view.
+      view.src = source.src;
+      view.srcset = source.srcset;
+      view.sizes = '100vw';
+      view.alt = source.alt;
+    }
+
     count.textContent = `${index + 1} / ${photos.length}`;
     if (!dlg.open) dlg.showModal();
   }
@@ -56,7 +73,10 @@
   });
 
   // <dialog> makes the page inert but does not stop it scrolling underneath.
-  dlg.addEventListener('close', () => document.body.style.overflow = '');
+  dlg.addEventListener('close', () => {
+    document.body.style.overflow = '';
+    player.pause();
+  });
   const openObserver = new MutationObserver(() => {
     document.body.style.overflow = dlg.open ? 'hidden' : '';
   });
@@ -81,7 +101,8 @@
     backdrop-filter: blur(3px);
   }
 
-  #lightbox img {
+  #lightbox img,
+  #lightbox video {
     position: absolute;
     inset: 0;
     margin: auto;
@@ -144,7 +165,8 @@
   }
 
   @media (max-width: 700px) {
-    #lightbox img { max-width: calc(100vw - 1.5rem); max-height: calc(100svh - 7rem); }
+    #lightbox img,
+  #lightbox video { max-width: calc(100vw - 1.5rem); max-height: calc(100svh - 7rem); }
     .nav { width: 2.5rem; height: 2.5rem; font-size: 1.5rem; }
     .prev { left: 0.5rem; }
     .next { right: 0.5rem; }

@@ -39,6 +39,8 @@ from pathlib import Path
 
 from PIL import Image, ImageCms, ImageOps
 
+import video
+
 # --------------------------------------------------------------------------- #
 # Configuration
 # --------------------------------------------------------------------------- #
@@ -46,6 +48,7 @@ from PIL import Image, ImageCms, ImageOps
 ROOT = Path(__file__).resolve().parent.parent
 SRC_DIR = ROOT / "photos" / "originals"
 OUT_DIR = ROOT / "public" / "photos"
+VIDEO_DIR = ROOT / "public" / "video"
 MANIFEST = ROOT / "src" / "data" / "photos.json"
 CACHE = ROOT / ".photo-cache" / "index.json"
 
@@ -91,6 +94,12 @@ class Photo:
     height: int
     placeholder: str     # data: URI, inlined to prevent layout shift
     srcset: list[dict]   # [{"w": 800, "src": "photos/foo-800-ab12cd34.webp"}]
+
+    # Set only for video. A loop is a photo that moves: it carries the same
+    # poster srcset, dimensions, and placeholder as a still, so grid layout,
+    # ordering, and the lightbox all work on it unchanged. The site renders
+    # <video> instead of <img> when this is present.
+    loop: dict | None = None
 
     def to_manifest(self) -> dict:
         d = dataclasses.asdict(self)
@@ -324,6 +333,109 @@ def process(path: Path) -> tuple[Photo, dict]:
     return photo, {"sha256": digest, "gps": gps, "photo": dataclasses.asdict(photo)}
 
 
+# A <video poster> takes a single URL and cannot be responsive, so a clip needs
+# exactly one poster tier. Generating the full ladder would leave three dead
+# files per clip committed forever.
+POSTER_WIDTH = 1200
+
+
+def derive_from_image(img: Image.Image, photo_id: str, short: str,
+                      only_width: int | None = None):
+    """Encode the srcset tiers and placeholder. Shared by stills and posters."""
+    if only_width is not None:
+        widths = [min(only_width, img.width)]
+    else:
+        widths = [w for w in WIDTHS if w <= img.width] or [min(WIDTHS[0], img.width)]
+        if img.width not in widths and img.width < WIDTHS[-1]:
+            widths.append(img.width)
+    widths = sorted(set(widths))
+
+    srcset = []
+    for w in widths:
+        name = f"{photo_id}-{w}-{short}.webp"
+        (OUT_DIR / name).write_bytes(_encode(img, w))
+        srcset.append({"w": w, "src": f"photos/{name}"})
+    return srcset, make_placeholder(img)
+
+
+def process_video(path: Path) -> tuple[Photo, dict]:
+    """Turn a clip into a short muted loop plus a poster.
+
+    The loop segment is chosen by analysing a tiny gray proxy: see
+    video.choose_window. The poster is the loop's first frame, run through the
+    same Pillow path as a still so the manifest entry is shaped identically.
+    """
+    rel = path.relative_to(SRC_DIR)
+    group = group_slug(rel.parts[0]) if len(rel.parts) > 1 else "unsorted"
+    digest = sha256_file(path)
+    short = digest[:8]
+    photo_id = slugify(rel.with_suffix("").as_posix().replace("/", "-"))
+
+    info = video.probe(path)
+    frames = video.decode_proxy(path)
+    start, duration, diag = video.choose_window(frames)
+
+    loop_name = f"{photo_id}-{short}.mp4"
+    video.encode_loop(path, start, duration, VIDEO_DIR / loop_name)
+
+    poster_png = VIDEO_DIR / f".{photo_id}-poster.png"
+    video.extract_poster(path, start, poster_png)
+    try:
+        with Image.open(poster_png) as raw:
+            img = to_srgb(raw)
+            if img.mode not in ("RGB", "L"):
+                img = img.convert("RGB")
+            srcset, placeholder = derive_from_image(
+                img, photo_id, short, only_width=POSTER_WIDTH)
+            width, height = img.width, img.height
+    finally:
+        poster_png.unlink(missing_ok=True)
+
+    # Container creation_time is UTC; a filename timestamp is local. Prefer the
+    # filename when present so clips interleave correctly with photos, whose
+    # EXIF timestamps are also local.
+    taken, sort_key = parse_filename_datetime(path.stem)
+    taken_from = "filename" if taken else None
+    if not taken and info.creation_time:
+        raw_dt = info.creation_time.replace("Z", "").split(".")[0]
+        try:
+            stamp = datetime.fromisoformat(raw_dt)
+            taken, sort_key = stamp.isoformat(), f"{stamp.isoformat()}.000"
+            taken_from = "container"
+        except ValueError:
+            pass
+    if not taken:
+        sort_key = "9999"
+
+    photo = Photo(
+        id=photo_id,
+        group=group,
+        source=rel.as_posix(),
+        taken=taken,
+        taken_from=taken_from,
+        sort_key=f"{sort_key}|{rel.as_posix()}",
+        width=width,
+        height=height,
+        placeholder=placeholder,
+        srcset=srcset,
+        loop={
+            "src": f"video/{loop_name}",
+            "start": round(start, 2),
+            "duration": round(duration, 2),
+            "source_duration": round(info.duration, 2),
+        },
+    )
+    return photo, {"sha256": digest, "gps": None, "select": diag,
+                   "photo": dataclasses.asdict(photo)}
+
+
+def process_any(path: Path) -> tuple[Photo, dict]:
+    """Dispatch by file type. Top-level so it is picklable for the pool."""
+    if path.suffix.lower() in video.VIDEO_SUFFIXES:
+        return process_video(path)
+    return process(path)
+
+
 # --------------------------------------------------------------------------- #
 # Driver
 # --------------------------------------------------------------------------- #
@@ -332,9 +444,10 @@ def process(path: Path) -> tuple[Photo, dict]:
 def discover() -> list[Path]:
     if not SRC_DIR.exists():
         return []
+    wanted = SOURCE_SUFFIXES | video.VIDEO_SUFFIXES
     return sorted(
         p for p in SRC_DIR.rglob("*")
-        if p.is_file() and p.suffix.lower() in SOURCE_SUFFIXES
+        if p.is_file() and p.suffix.lower() in wanted
     )
 
 
@@ -357,11 +470,21 @@ def main() -> int:
 
     sources = discover()
     if not sources:
-        print(f"No source images under {SRC_DIR.relative_to(ROOT)}/")
-        print("Drop full-resolution JPEGs there (subfolders become groups) and re-run.")
+        print(f"No source media under {SRC_DIR.relative_to(ROOT)}/")
+        print("Drop JPEGs or clips there (subfolders become groups) and re-run.")
         return 0
 
+    clips = [p for p in sources if p.suffix.lower() in video.VIDEO_SUFFIXES]
+    if clips and not video.have_ffmpeg():
+        print(f"Found {len(clips)} video file(s) but ffmpeg/ffprobe are not on PATH.")
+        print("Install ffmpeg, or move the clips out of photos/originals/ to skip them.")
+        print("Continuing with stills only.")
+        sources = [p for p in sources if p not in set(clips)]
+        clips = []
+
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    if clips:
+        VIDEO_DIR.mkdir(parents=True, exist_ok=True)
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
     CACHE.parent.mkdir(parents=True, exist_ok=True)
 
@@ -381,16 +504,22 @@ def main() -> int:
                 continue
         todo.append(path)
 
-    print(f"{len(sources)} source images, {len(todo)} to process, "
-          f"{len(sources) - len(todo)} cached")
+    print(f"{len(sources)} source files ({len(clips)} video), {len(todo)} to "
+          f"process, {len(sources) - len(todo)} cached")
 
     if todo:
         with futures.ProcessPoolExecutor(max_workers=max(1, args.jobs)) as pool:
-            for i, (photo, entry) in enumerate(pool.map(process, todo), 1):
+            for i, (photo, entry) in enumerate(pool.map(process_any, todo), 1):
                 photos.append(photo)
                 cache[Path(entry["photo"]["source"]).as_posix()] = entry
+                kind = "loop" if photo.loop else "sizes"
+                extra = ""
+                if photo.loop:
+                    sel = entry.get("select") or {}
+                    extra = (f"  @{photo.loop['start']}s"
+                             f"  closure={sel.get('closure', '?')}")
                 print(f"  [{i}/{len(todo)}] {photo.id}  "
-                      f"{photo.width}x{photo.height}  {len(photo.srcset)} sizes")
+                      f"{photo.width}x{photo.height}  {len(photo.srcset)} {kind}{extra}")
 
     photos.sort(key=lambda p: p.sort_key)
 
@@ -418,8 +547,9 @@ def main() -> int:
 
     if not args.keep_orphans:
         live = {Path(s["src"]).name for p in photos for s in p.srcset}
+        live |= {Path(p.loop["src"]).name for p in photos if p.loop}
         removed = 0
-        for stale in OUT_DIR.glob("*.webp"):
+        for stale in list(OUT_DIR.glob("*.webp")) + list(VIDEO_DIR.glob("*.mp4")):
             if stale.name not in live:
                 stale.unlink()
                 removed += 1

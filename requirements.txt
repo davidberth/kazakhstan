@@ -10,3 +10,7 @@ Pillow>=12.0.0
 # It caches Natural Earth shapefiles locally on first run, then works offline.
 matplotlib>=3.10
 cartopy>=0.25
+
+# Video loops (tools/video.py) need an ffmpeg build, not a Python package.
+# Found on PATH, at C:/ffmpeg/bin, or wherever FFMPEG_DIR points. numpy comes
+# in with matplotlib above and does all the frame analysis.

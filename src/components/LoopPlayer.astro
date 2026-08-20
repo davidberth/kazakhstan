@@ -1,0 +1,46 @@
+---
+// Plays loops only while they are on screen.
+//
+// With autoplay left to the browser, every loop on the page decodes at once,
+// which on a phone means the fans, the battery, and the scroll all suffer. An
+// IntersectionObserver keeps at most the visible handful running, and pauses
+// the rest. preload="none" in the markup means an off-screen loop never even
+// fetches its bytes.
+//
+// Browsers only autoplay muted video. That is a hard anti-annoyance rule, not
+// a setting, which is why the pipeline strips audio at encode time.
+---
+
+<script>
+  const loops = Array.from(document.querySelectorAll('video[data-loop]'));
+  if (loops.length) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const el = entry.target;
+          if (entry.isIntersecting && !reduced.matches) {
+            // preload="none" means there is nothing buffered yet; setting it
+            // here is what actually starts the fetch.
+            el.preload = 'auto';
+            el.play().catch(() => {
+              /* Autoplay can still be refused (data saver, low power).
+                 The poster stays visible, which is a fine fallback. */
+            });
+          } else {
+            el.pause();
+          }
+        }
+      },
+      { rootMargin: '200px 0px', threshold: 0.15 }
+    );
+
+    loops.forEach((el) => observer.observe(el));
+
+    // Honour a mid-session change to the OS motion setting.
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) loops.forEach((el) => el.pause());
+    });
+  }
+</script>

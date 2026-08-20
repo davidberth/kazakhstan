@@ -92,11 +92,13 @@ Two decoupled halves. This separation is deliberate — the framework can be swa
 touching the pipeline, and vice versa.
 
 ```
-photos/originals/     full-res JPEGs, NOT committed (gitignored)
+photos/originals/     full-res JPEGs and clips, NOT committed (gitignored)
   |
   |  tools/build_photos.py   — EXIF read, orient, resize, encode, hash, manifest
+  |  tools/video.py          — probe, proxy-decode, pick loop window, encode
   v
-public/photos/        committed web derivatives (multiple widths, WebP + JPEG)
+public/photos/        committed web derivatives (multiple widths, WebP)
+public/video/         committed muted H.264 loops
 src/data/photos.json  committed manifest: dimensions, timestamps, placeholders
   |
   |  Astro reads the manifest, emits <picture> with srcset
@@ -123,6 +125,34 @@ dist/                 static output -> GitHub Actions -> GitHub Pages
 - **Deterministic and idempotent.** Content-hashed output names; unchanged input produces
   byte-identical output and no git churn. Re-encoding photos on every run would bloat the
   repo permanently, since git keeps every version of every binary forever.
+
+### Video loops
+
+A clip in `photos/originals/` becomes a short muted loop. **A loop is a photo
+that moves:** it carries the same poster, dimensions, and placeholder as a
+still, so grid layout, chronological ordering, and the lightbox all work on it
+unchanged. The site renders `<video>` instead of `<img>` when a manifest entry
+has a `loop` key.
+
+- Needs an **ffmpeg build**, not a Python package. `tools/video.py` finds it on
+  PATH, at `C:/ffmpeg/bin`, or via `FFMPEG_DIR`. No ffmpeg means clips are
+  skipped with a warning and stills still build.
+- Which seconds to loop is chosen by analysing a 160px gray proxy piped from
+  ffmpeg into numpy: reward motion and sharpness, reward first/last frame
+  similarity (loop closure), reject windows containing a scene cut, and require
+  a motion floor so a static window does not win by collecting free marks.
+- Scene cuts are detected as spikes **relative to the local median**, never as a
+  fraction of the global maximum — a fast pan is sustained high motion and would
+  otherwise read as an unbroken run of cuts.
+- Encode is muted on purpose: browsers only autoplay muted video, so the audio
+  track could never play and is pure weight. `yuv420p` + `profile high` is what
+  makes the file decodable everywhere.
+- Loops play only while on screen (`IntersectionObserver`) and never under
+  `prefers-reduced-motion`. `preload="none"` means an off-screen loop costs
+  nothing.
+- **Video is where the GitHub Pages limits become reachable.** Photos never will
+  be. Watch total committed size; a few minutes of loops is fine, a library of
+  full clips is not.
 
 ### Content
 
@@ -154,6 +184,7 @@ npm run preview  # serve dist/ as it will actually be served
 
 python tools/build_photos.py            # regenerate derivatives + manifest
 python tools/build_photos.py --force    # ignore cache, re-encode everything
+python tools/build_maps.py              # regenerate chapter maps
 ```
 
 ## Guardrails

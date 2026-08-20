@@ -1,5 +1,5 @@
 {
-  "count": 86,
+  "count": 84,
   "widths": [
     480,
     800,
@@ -32,7 +32,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260810-204803-1800-bbaf0871.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-014124",
@@ -59,7 +60,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-014124-1800-6ec347f8.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-0356550",
@@ -86,7 +88,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-0356550-1800-e8101cb8.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-035825",
@@ -113,7 +116,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-035825-1800-18f87ac7.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-040516",
@@ -140,7 +144,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-040516-1800-0a91dfe5.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-040520",
@@ -167,7 +172,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-040520-1800-df7067e0.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-044210",
@@ -194,7 +200,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-044210-1800-23e46de7.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-044227",
@@ -221,7 +228,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-044227-1800-452e5ac5.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-051039",
@@ -248,7 +256,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-051039-1800-793f9bf1.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-062848",
@@ -275,7 +284,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-062848-1800-e20484ba.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-065052",
@@ -302,7 +312,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-065052-1800-eb045cad.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-065056",
@@ -329,7 +340,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-065056-1800-01e4c2f0.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-065102",
@@ -356,7 +368,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-065102-1800-410ddc28.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-093408",
@@ -383,7 +396,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-093408-1800-8064c949.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-094616",
@@ -410,7 +424,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-094616-1800-3ce0a827.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-095054",
@@ -437,7 +452,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-095054-1800-0ab6e0b8.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-095100",
@@ -464,7 +480,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-095100-1800-a29a2fd9.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-1113540",
@@ -491,7 +508,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-1113540-1800-f3277edf.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260811-111356",
@@ -518,7 +536,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260811-111356-1800-e604297b.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-img-20260812-wa0000",
@@ -545,7 +564,8 @@
           "w": 1600,
           "src": "photos/01-astana-img-20260812-wa0000-1600-f2d508f4.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-043050",
@@ -572,7 +592,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-043050-1800-7afe6210.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-061550",
@@ -599,7 +620,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-061550-1800-12b48334.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-061606",
@@ -626,7 +648,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-061606-1800-0410cbde.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-061631",
@@ -653,7 +676,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-061631-1800-02aefb52.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-061747",
@@ -680,7 +704,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-061747-1800-74325d4a.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-064817",
@@ -707,34 +732,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-064817-1800-0e6e1846.webp"
         }
-      ]
-    },
-    {
-      "id": "01-astana-20260812-064854",
-      "group": "astana",
-      "taken": "2026-08-12T06:48:54",
-      "taken_from": "exif",
-      "width": 4000,
-      "height": 3000,
-      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAwAE/8QAHRAAAgICAwEAAAAAAAAAAAAAAQMAAgQRITJRgf/EABUBAQEAAAAAAAAAAAAAAAAAAAID/8QAFxEAAwEAAAAAAAAAAAAAAAAAAAETAv/aAAwDAQACEQMRAD8AmOxGdWg/DCNMa29MBiOx1VrxQeTJkpom4FN6PsdtE5o//9k=",
-      "srcset": [
-        {
-          "w": 480,
-          "src": "photos/01-astana-20260812-064854-480-7fd29798.webp"
-        },
-        {
-          "w": 800,
-          "src": "photos/01-astana-20260812-064854-800-7fd29798.webp"
-        },
-        {
-          "w": 1200,
-          "src": "photos/01-astana-20260812-064854-1200-7fd29798.webp"
-        },
-        {
-          "w": 1800,
-          "src": "photos/01-astana-20260812-064854-1800-7fd29798.webp"
-        }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-064915",
@@ -761,7 +760,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-064915-1800-7acb5b20.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-064921",
@@ -788,7 +788,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-064921-1800-b250a8e9.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-064932",
@@ -815,7 +816,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-064932-1800-518db684.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-064944",
@@ -842,7 +844,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-064944-1800-739b8b7b.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-065013",
@@ -869,7 +872,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-065013-1800-95f24da9.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-065026",
@@ -896,7 +900,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-065026-1800-fa396841.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-065039",
@@ -923,7 +928,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-065039-1800-7d96f3bf.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-065042",
@@ -950,7 +956,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-065042-1800-2016051f.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-065605",
@@ -977,7 +984,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-065605-1800-7d4904f5.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-070029",
@@ -1004,7 +1012,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-070029-1800-ee533bcf.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-070128",
@@ -1031,7 +1040,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-070128-1800-e90642b4.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-075105",
@@ -1058,7 +1068,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-075105-1800-8fac5e15.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-083621",
@@ -1085,7 +1096,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-083621-1800-47b315fc.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-083801",
@@ -1112,7 +1124,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-083801-1800-857a9886.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-083804",
@@ -1139,7 +1152,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-083804-1800-f9537b66.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-083806",
@@ -1166,7 +1180,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-083806-1800-9158e443.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-083818",
@@ -1193,7 +1208,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-083818-1800-04e8e403.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084014",
@@ -1220,7 +1236,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084014-1800-cf643515.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084023",
@@ -1247,7 +1264,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084023-1800-a23290f1.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084254",
@@ -1274,7 +1292,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084254-1800-883803a9.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084257",
@@ -1301,7 +1320,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084257-1800-98677c44.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084540",
@@ -1328,7 +1348,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084540-1800-76f14981.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084551",
@@ -1355,7 +1376,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084551-1800-58a580d2.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084553",
@@ -1382,7 +1404,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084553-1800-8a80f63b.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-084921",
@@ -1409,7 +1432,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-084921-1800-cee59d18.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-085532",
@@ -1436,7 +1460,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-085532-1800-e4adaef3.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-085542",
@@ -1463,7 +1488,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-085542-1800-297dc411.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-085543",
@@ -1490,7 +1516,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-085543-1800-7694a004.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-085647",
@@ -1517,7 +1544,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-085647-1800-e505de7f.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-20260812-085650",
@@ -1544,7 +1572,8 @@
           "w": 1800,
           "src": "photos/01-astana-20260812-085650-1800-aa14da79.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-20260812-115255",
@@ -1571,7 +1600,8 @@
           "w": 1800,
           "src": "photos/02-shapan-20260812-115255-1800-7fdb70a4.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-20260812-115526",
@@ -1598,7 +1628,8 @@
           "w": 1800,
           "src": "photos/02-shapan-20260812-115526-1800-5c3e345c.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-whatsapp-image-2026-08-12-at-211518",
@@ -1625,7 +1656,8 @@
           "w": 1800,
           "src": "photos/01-astana-whatsapp-image-2026-08-12-at-211518-1800-a8cda702.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-img-20260813-wa0000",
@@ -1652,7 +1684,8 @@
           "w": 1280,
           "src": "photos/02-shapan-img-20260813-wa0000-1280-d0594072.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-whatsapp-image-2026-08-13-at-072444",
@@ -1679,7 +1712,8 @@
           "w": 1280,
           "src": "photos/02-shapan-whatsapp-image-2026-08-13-at-072444-1280-f74820aa.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-whatsapp-image-2026-08-13-at-072445",
@@ -1706,7 +1740,8 @@
           "w": 1280,
           "src": "photos/02-shapan-whatsapp-image-2026-08-13-at-072445-1280-7b21bb32.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-whatsapp-image-2026-08-13-at-072459",
@@ -1733,11 +1768,12 @@
           "w": 1600,
           "src": "photos/02-shapan-whatsapp-image-2026-08-13-at-072459-1600-f871878b.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
-      "id": "02-shapan-20260813-093250",
-      "group": "shapan",
+      "id": "03-almaty-20260813-093250",
+      "group": "almaty",
       "taken": "2026-08-13T09:32:51",
       "taken_from": "exif",
       "width": 4000,
@@ -1746,21 +1782,22 @@
       "srcset": [
         {
           "w": 480,
-          "src": "photos/02-shapan-20260813-093250-480-797359fa.webp"
+          "src": "photos/03-almaty-20260813-093250-480-797359fa.webp"
         },
         {
           "w": 800,
-          "src": "photos/02-shapan-20260813-093250-800-797359fa.webp"
+          "src": "photos/03-almaty-20260813-093250-800-797359fa.webp"
         },
         {
           "w": 1200,
-          "src": "photos/02-shapan-20260813-093250-1200-797359fa.webp"
+          "src": "photos/03-almaty-20260813-093250-1200-797359fa.webp"
         },
         {
           "w": 1800,
-          "src": "photos/02-shapan-20260813-093250-1800-797359fa.webp"
+          "src": "photos/03-almaty-20260813-093250-1800-797359fa.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260814-034150",
@@ -1787,7 +1824,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260814-034150-1800-68d4b356.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260814-034939",
@@ -1814,7 +1852,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260814-034939-1800-469ec922.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260814-035041",
@@ -1841,7 +1880,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260814-035041-1800-370e18e9.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260814-043045",
@@ -1868,7 +1908,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260814-043045-1800-61f02f1d.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260814-043050",
@@ -1895,7 +1936,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260814-043050-1800-f68028d7.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260814-052028",
@@ -1922,7 +1964,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260814-052028-1800-d97cb24a.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260814-094121",
@@ -1949,7 +1992,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260814-094121-1800-0c76b2e7.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260814-095237",
@@ -1976,7 +2020,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260814-095237-1800-9017a234.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260814-0633292",
@@ -2003,7 +2048,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260814-0633292-1800-0f36524a.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260815-051831",
@@ -2030,7 +2076,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260815-051831-1800-b6aee5d8.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260815-052806",
@@ -2057,7 +2104,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260815-052806-1800-5546a39c.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260815-052811",
@@ -2084,34 +2132,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260815-052811-1800-cea4f227.webp"
         }
-      ]
-    },
-    {
-      "id": "04-mountains-20260815-103611",
-      "group": "mountains",
-      "taken": "2026-08-15T10:36:11",
-      "taken_from": "exif",
-      "width": 4000,
-      "height": 3000,
-      "placeholder": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAAMABADASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAABQED/8QAHhAAAQQBBQAAAAAAAAAAAAAAAQACAwQSBRExQaH/xAAUAQEAAAAAAAAAAAAAAAAAAAAA/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8ANpapG9mFgAP6cOCs7l2AbiMZHxEqIP/Z",
-      "srcset": [
-        {
-          "w": 480,
-          "src": "photos/04-mountains-20260815-103611-480-514b2935.webp"
-        },
-        {
-          "w": 800,
-          "src": "photos/04-mountains-20260815-103611-800-514b2935.webp"
-        },
-        {
-          "w": 1200,
-          "src": "photos/04-mountains-20260815-103611-1200-514b2935.webp"
-        },
-        {
-          "w": 1800,
-          "src": "photos/04-mountains-20260815-103611-1800-514b2935.webp"
-        }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-20260815-103620",
@@ -2138,7 +2160,8 @@
           "w": 1800,
           "src": "photos/04-mountains-20260815-103620-1800-cc5c4bbd.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260816-145746",
@@ -2165,7 +2188,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260816-145746-1800-1727bec2.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260816-1510312",
@@ -2192,7 +2216,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260816-1510312-1800-13558746.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "03-almaty-20260816-1457342",
@@ -2219,7 +2244,8 @@
           "w": 1800,
           "src": "photos/03-almaty-20260816-1457342-1800-f0655fde.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "04-mountains-whatsapp-image-2026-08-16-at-194351",
@@ -2246,7 +2272,8 @@
           "w": 1800,
           "src": "photos/04-mountains-whatsapp-image-2026-08-16-at-194351-1800-b77d7981.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-4",
@@ -2273,7 +2300,8 @@
           "w": 1600,
           "src": "photos/01-astana-4-1600-61bec6d7.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "01-astana-77",
@@ -2296,7 +2324,8 @@
           "w": 897,
           "src": "photos/01-astana-77-897-a8e8b13d.webp"
         }
-      ]
+      ],
+      "loop": null
     },
     {
       "id": "02-shapan-2",
@@ -2319,7 +2348,8 @@
           "w": 960,
           "src": "photos/02-shapan-2-960-73273c60.webp"
         }
-      ]
+      ],
+      "loop": null
     }
   ]
 }
